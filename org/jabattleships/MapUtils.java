@@ -2,9 +2,9 @@ package org.jabattleships;
 
 import java.util.function.Consumer;
 
-public class MapUtils {
+public abstract class MapUtils {
     public static final int SIZE = 10;
-    public static final char[] MAP_TILES = {'x', '*', '-',};
+    public static final char[] MAP_TILES = {'~', '*', '-',};
 
     public static void iterMap(Consumer<int[]> foreachCell) {
         for (int row = 0; row < SIZE; row++) {

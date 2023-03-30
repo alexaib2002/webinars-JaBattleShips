@@ -1,12 +1,17 @@
 package org.jabattleships;
 
+import java.util.Random;
 import java.util.Scanner;
 
 import static org.jabattleships.MapUtils.*;
 
 public class Main {
-    private static final char[][] GameMap = new char[SIZE][SIZE];
-    private static final char[][] EnemyMap = new char[SIZE][SIZE];
+
+    public static final int[] Enemies = {4,};
+
+    private static final char[][]
+            GameMap = new char[SIZE][SIZE],
+            EnemyMap = new char[SIZE][SIZE];
     private static boolean gameState = true;
 
     public static void main(String[] args) {
@@ -59,11 +64,33 @@ public class Main {
     }
 
     private static void initEnemyMap() {
-        iterMap(tile -> {
-            // TODO implement advance logic...
-            if (tile[1] == 0)
-                EnemyMap[tile[0]][tile[1]] = MAP_TILES[1];
-        });
+        Random rnd = new Random();
+        boolean invalid = true, orientation;
+        int x = 0, y = 0;
+        for (int enemy: Enemies) {
+            orientation = rnd.nextBoolean(); // true: spans across x
+            // generate its position
+            while (invalid) {
+                x = rnd.nextInt(SIZE - 1);
+                y = rnd.nextInt(SIZE - 1);
+                if (orientation) {
+                    if (x + enemy >= SIZE)
+                        continue;
+                } else {
+                    if (y + enemy >= SIZE)
+                        continue;
+                }
+                invalid = false;
+            }
+            if (orientation)
+                for (int i = 0; i < enemy; i++) {
+                    EnemyMap[x + i][y] = MAP_TILES[1];
+                }
+            else
+                for (int i = 0; i < enemy; i++) {
+                    EnemyMap[x][y + i] = MAP_TILES[1];
+                }
+        }
     }
 
 }
